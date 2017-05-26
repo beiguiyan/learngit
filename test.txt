@@ -1,0 +1,15 @@
+从JVM调用的角度分析Java程序对種内存空间的使用：
+当JVM进程启动的时候，会从类加裁路径中找到包含main方法的入口类HelloJVM；
+找到HelloJVM后会直接读取该文件中的二进制数据并且把该类的信息放到运行时的Method内存区域中；
+然后会定位到He11oJVM中的main方法的字节码中并开始执行main方法中的指令：
+Student student= new Student("dt_spark");
+此时会创建student实例对象并且使用student来应用该对象(或者说对该对象命名) , 其内幕如下：
+第一步：JVM会直接到Method区域中去査找Student类的信息, 此时发现没有Student类, 就通过
+        类加载器加载该Student的类文件；              
+第二步：在JVM的Method区域加裁并找到了Student类之后会在Heap区域中为Student实例对象分配
+        内存并且在Student的实例对象中持有指向方法区域中的Student类的应用(内存地址);
+第三步：JVM实例完成后会在当別线程中为Stack中的referenc建立实际的应用关系, 此时会赋给
+        student。
+
+
+在JVM中方法的调用一定是属于线程的行为. 也就是说方法调用本身会发生在调用线程的方法调用站！
